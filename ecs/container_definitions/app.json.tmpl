@@ -1,0 +1,95 @@
+[
+  {
+    "name": "nginx",
+    "image": "${nginx_repo}:latest",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group" : "/ecs/riflessione",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "nginx"
+      }
+    },
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 80,
+        "protocol": "tcp"
+      },
+      {
+        "containerPort": 8080,
+        "hostPort": 8080,
+        "protocol": "tcp"
+      }
+    ],
+    "essential": true
+  },
+  {
+    "name": "app",
+    "image": "${app_repo}:latest",
+    "essential": true,
+    "command": [
+      "./scripts/start_gunicorn.sh"
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group" : "/ecs/riflessione",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "app"
+      }
+    },
+    "environment": [
+      {
+        "name": "DB_HOST",
+        "value": "${db_host}"
+      },
+      {
+        "name": "DB_USER",
+        "value": "${db_user}"
+      },
+      {
+        "name": "REDIS_HOST",
+        "value": "${redis_host}"
+      },
+      {
+        "name": "AWS_STORAGE_BUCKET_NAME",
+        "value": "${s3_bucket_name}"
+      },
+      {
+        "name": "STATIC_URL",
+        "value": "${static_url}/${s3_bucket_name}"
+      },
+      {
+        "name": "AWS_DEFAULT_REGION",
+        "value": "ap-northeast-1"
+      },
+      {
+        "name": "DJANGO_ENV",
+        "value": "staging"
+      },
+      {
+        "name": "DEBUG",
+        "value": "TRUE"
+      },
+      {
+        "name": "UPLOAD_STORAGE",
+        "value": "S3"
+      }
+    ],
+    "secrets": [
+      {
+        "name": "DB_PASSWORD",
+        "valueFrom": "/db/password"
+      },
+      {
+        "name": "AWS_ACCESS_KEY_ID",
+        "valueFrom": "/riflessione/prd/access_key_id"
+      },
+      {
+        "name": "AWS_SECRET_ACCESS_KEY",
+        "valueFrom": "/riflessione/prd/secret_access_key"
+      }
+    ]
+  }
+]
