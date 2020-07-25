@@ -1,0 +1,24 @@
+---
+  ci: circleci
+  terraform:
+    plan:
+      template: |
+        {{ .Message }}
+        {{if .Result}}
+        ```
+        {{ .Result }}
+        ```
+        {{end}}
+        ```
+        {{ .Body }}
+        ```
+    apply:
+      template: |
+        {{ .Message }}
+        {{if .Result}}
+        ```
+        {{ .Result }}
+        ```
+        {{end}}
+        ```
+        {{ .Body }}

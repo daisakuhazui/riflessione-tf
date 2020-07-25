@@ -1,0 +1,89 @@
+version: 2.1
+
+orbs:
+  slack: circleci/slack@3.3.0
+
+executors:
+  terraform:
+    working_directory: ~/work
+    docker:
+      - image: hashicorp/terraform:0.12.10
+
+jobs:
+  checkout_code:
+    executor: terraform
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Revision }}
+            - source-v1-
+      - checkout
+      - save_cache:
+          key: source-v1-{{ .Revision }}
+          paths:
+            - .git
+      - run: env | sort
+      - run: ls -l
+      - run: terraform init -input=false
+      - persist_to_workspace:
+          root: ~/
+          paths: work
+  lint:
+    executor: terraform
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: env | sort
+      - run: ls -l
+      - run: ./scripts/circleci_fmt.sh
+  plan:
+    executor: terraform
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: env | sort
+      - run: ls -l
+      - run: ./scripts/circleci_plan.sh
+      - persist_to_workspace:
+          root: ~/
+          paths: work
+  apply:
+    executor: terraform
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: env | sort
+      - run: ls -l
+      - run: ./scripts/circleci_apply.sh
+
+workflows:
+  version: 2
+  plan_and_apply:
+    jobs:
+      - checkout_code
+      - lint:
+          requires:
+            - checkout_code
+      - plan:
+          requires:
+            - lint
+      - slack/approval-notification:
+          message: Pending approval
+          mentions: '<!here>'
+          requires:
+            - plan
+          filters:
+            branches:
+              only:
+                - master
+      - waiting-for-approval:
+          type: approval
+          requires:
+            - plan
+          filters:
+            branches:
+              only:
+                - master
+      - apply:
+          requires:
+            - waiting-for-approval
