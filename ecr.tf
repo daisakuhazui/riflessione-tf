@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "nginx" {
-  name = "${var.service_name}ecr-nginx"
+  name = "${var.service_name}-ecr-nginx"
 
   image_scanning_configuration {
     scan_on_push = true
