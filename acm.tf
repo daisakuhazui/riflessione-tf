@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "default" {
-  domain_name               = "${var.domain_name}"
+  domain_name               = "${var.domain_name}."
   validation_method         = "DNS"
 }
 
@@ -9,12 +9,4 @@ resource "aws_acm_certificate_validation" "default" {
   timeouts {
     create = "10m"
   }
-}
-
-
-## virginia region
-resource "aws_acm_certificate" "virginia" {
-  provider                  = "aws.virginia"
-  domain_name               = "${var.domain_name}"
-  validation_method         = "DNS"
 }

@@ -9,7 +9,7 @@ resource "aws_db_subnet_group" "prd" {
 
 resource "aws_db_parameter_group" "prd" {
   name   = "${var.service_name}-rds-parameter-group"
-  family = "poprdres11"
+  family = "postgres11"
 
   tags = {
     Name = "${var.service_name}-rds-parameter-group"
@@ -18,7 +18,7 @@ resource "aws_db_parameter_group" "prd" {
 
 resource "aws_db_instance" "prd" {
   identifier              = "${var.service_name}-rds-app-01"
-  engine                  = "poprdres"
+  engine                  = "postgres"
   engine_version          = "11.4"
   allocated_storage       = var.db_storage_size
   instance_class          = var.db_instance_class

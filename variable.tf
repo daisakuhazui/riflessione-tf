@@ -38,5 +38,5 @@ variable "db_name" {
 
 variable "domain_name" {
   description = "Domain name"
-  default     = "riflessione.jp"
+  default     = "daisaku-portfolio.com"
 }
