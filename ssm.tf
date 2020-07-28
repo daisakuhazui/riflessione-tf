@@ -9,7 +9,18 @@ resource "aws_ssm_parameter" "db_password" {
   }
 }
 
-resource "aws_ssm_parameter" "wasabi_access_key_id" {
+resource "aws_ssm_parameter" "django_addmin_password" {
+  name        = "/django/admin/password"
+  value       = "uninitialized"
+  type        = "SecureString"
+  description = "Django Admin Password"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "aws_access_key_id" {
   name        = "/riflessione/prd/access_key_id"
   value       = "uninitialized"
   type        = "SecureString"
@@ -21,7 +32,7 @@ resource "aws_ssm_parameter" "wasabi_access_key_id" {
 }
 
 
-resource "aws_ssm_parameter" "wasabi_secret_access_key" {
+resource "aws_ssm_parameter" "aws_secret_access_key" {
   name        = "/riflessione/prd/secret_access_key"
   value       = "uninitialized"
   type        = "SecureString"
