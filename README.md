@@ -1,28 +1,32 @@
 # riflessione-tf
 Riflessione AWS環境 - terraform
 
-## 本ドキュメントについて
+## About This Document
 
-開発環境の構築手順、また開発時に必要となる各種手順について記載する。
+Describe the procedure for building the Development Environment and various procedures required for Development.
 
-## 開発環境構築
+This Terraform project can build the AWS Architecture described later.
 
-- Macによる開発を前提とする。
-- Docker for Macをインストールする。
-- リポジトリをクローンする
+![aws](./img/aws.png)
+
+# Building Development Environment
+
+- Assuming development with Mac OS X
+- Install Docker for Mac
+- Clone this repository
 
 ```bash
 git clone git@github.com:mmmcorp/riflessione-tf.git
 cd riflessione-tf
 ```
 
-- `env.sample` ファイルをコピーして、 `.env` を作成し、そこにAWSアクセスキーなど入力する
+- Copy env.sample file, and then rename it `.env` . Enter the required information such as AWS Access Key in `.env` .
 
 ```bash
 cp env.sample .env
 ```
 
-## terraform コマンド
+## Terraform Commands
 
 ### terraform init
 
