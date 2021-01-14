@@ -1,5 +1,5 @@
 # riflessione-tf
-Riflessione AWS環境 - terraform
+Riflessione AWS Architecture - terraform
 
 ## About This Document
 
@@ -16,14 +16,14 @@ This Terraform project can build the AWS Architecture described later.
 - Clone this repository
 
 ```bash
-git clone git@github.com:mmmcorp/riflessione-tf.git
-cd riflessione-tf
+$ git clone git@github.com:mmmcorp/riflessione-tf.git
+$ cd riflessione-tf
 ```
 
 - Copy env.sample file, and then rename it `.env` . Enter the required information such as AWS Access Key in `.env` .
 
 ```bash
-cp env.sample .env
+$ cp env.sample .env
 ```
 
 ## Terraform Commands
